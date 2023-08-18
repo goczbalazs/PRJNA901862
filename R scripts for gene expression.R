@@ -1882,3 +1882,498 @@ for (i in names(sheets1)) {
     rename("Gene description" = "description")
   assign(i,x)  
 }
+####creating the suppelementary figure S3-S4####
+####SYNGO barplot_CPU####
+?reorder()
+Syngo_CPU$Name <- factor(Syngo_CPU$Name,
+                         levels = Syngo_CPU$Name[order(Syngo_CPU$Name, decreasing = TRUE)])
+
+?factor
+db <- as.numeric(Syngo_CPU$db)
+Name <- Syngo_CPU$Name
+
+ggplot()+
+  geom_bar(aes(x= reorder(Name,db), y = db, fill= db),
+                          show.legend = F, width = 0.8, colour="black", size=0.2, stat = "identity")+
+  theme_classic() +
+  labs(x=NULL, y=NULL)+
+  scale_y_continuous(expand=c(0, 0), limits = c(0, 200), breaks = seq(0,200, by = 40))+
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 30), guide = guide_axis(check.overlap = TRUE))+
+  coord_flip()+
+  scale_fill_gradient(low = "blue", high = "red")+
+  theme(legend.position="right", legend.direction="vertical")+
+  theme(axis.ticks = element_line(colour = "black"),
+        axis.text = element_text(colour = "black")) +labs(y = "Number of overrepresented genes")+
+  theme(text = element_text(size = 5)) + theme(axis.text = element_text(size = 5),
+                                               axis.text.x = element_text(colour = "black"),
+                                               axis.text.y = element_text(colour = "black"))+
+  theme(legend.key.size = unit(2, 'mm'))+
+  theme(legend.text = element_text(size=5))+
+  theme(legend.title = element_text(size=5)) + theme(axis.line = element_line(linewidth = 0.2)) + theme(axis.ticks = element_line(linewidth = 0.2))
+ggsave("Syngo_barchart_CPU.tiff", width = 90 , height = 60 , units = "mm")
+
+####SYNGO barplot_MS####
+
+db_ms<- as.numeric(Syngo_MS$db_ms)
+Name_ms<- Syngo_MS$Name_MS
+
+ggplot()+
+  geom_bar(aes(x= reorder(Name_ms,db_ms), y = db_ms, fill= db_ms),
+           show.legend = F, width = 0.8, colour="black", size=0.2, stat = "identity")+
+  theme_classic() +
+  labs(x=NULL, y=NULL)+
+  scale_y_continuous(expand=c(0, 0), limits = c(0, 150), breaks = seq(0,150, by = 25))+
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 30), guide = guide_axis(check.overlap = TRUE))+
+  coord_flip()+
+  scale_fill_gradient(low = "blue", high = "red")+
+  theme(legend.position="right", legend.direction="vertical")+
+  theme(axis.ticks = element_line(colour = "black"),
+        axis.text = element_text(colour = "black")) +labs(y = "Number of overrepresented genes")+
+  theme(text = element_text(size = 5)) + theme(axis.text = element_text(size = 5),
+                                               axis.text.x = element_text(colour = "black"),
+                                               axis.text.y = element_text(colour = "black"))+
+  theme(legend.key.size = unit(2, 'mm'))+
+  theme(legend.text = element_text(size=5))+
+  theme(legend.title = element_text(size=5)) + theme(axis.line = element_line(linewidth = 0.2)) + theme(axis.ticks = element_line(linewidth = 0.2))
+ggsave("Syngo_barchart_MS.tiff", width = 90 , height = 60 , units = "mm")
+
+print(JsonData)
+?getLDS
+
+
+####SImpleGO_CPU######
+dotplot(CPU_sign_pathways_BP,
+        x = "geneRatio",
+        color = "p.adjust",
+        showCategory = 12,
+        size = "Count",
+        split = NULL,
+        font.size = 12,
+        title = "",
+        orderBy = "Count",
+        label_format = 40,
+)+
+  geom_point(aes(color=p.adjust, size = Count)) +
+  theme(text = element_text(size = 10))+  theme(axis.ticks = element_line(colour = "black"),
+                                               axis.text = element_text(colour = "black"))+
+  theme(axis.ticks = element_line(colour = "black"),
+        axis.text = element_text(colour = "black"))+
+  theme(legend.position="right", legend.direction="vertical", legend.box.spacing = unit(5, "pt"),
+        legend.margin=margin(0,0,0,0))+
+  theme(text = element_text(size = 5)) + theme(axis.text = element_text(size = 5),
+                                               axis.text.x = element_text(colour = "black"),
+                                               axis.text.y = element_text(colour = "black"))+
+  theme(legend.key.size = unit(2, 'mm'))+
+  theme(legend.text = element_text(size=5))+
+  theme(legend.title = element_text(size=5)) + theme(axis.line = element_line(linewidth = 0.2)) + theme(axis.ticks = element_line(linewidth = 0.2))+
+  theme(axis.ticks = element_line(colour = "black"),
+        axis.text = element_text(colour = "black")) + theme(axis.line = element_line(linewidth = 0.12),
+                                                            axis.ticks = element_line(linewidth = 0.12))
+ggsave("CPUGO.TIFF", width = 90 , height = 70 , scaling =0.5, units = "mm", dpi = 600 )
+####SimpleGO_MS########
+
+dotplot(MS_sign_pathways_BP,
+        x = "geneRatio",
+        color = "p.adjust",
+        showCategory = 12,
+        size = "Count",
+        split = NULL,
+        font.size = 12,
+        title = "",
+        orderBy = "Count",
+        label_format = 40,
+)+
+  geom_point(aes(color=p.adjust, size = Count)) +
+  theme(text = element_text(size = 10))+  theme(axis.ticks = element_line(colour = "black"),
+                                                axis.text = element_text(colour = "black"))+
+  theme(axis.ticks = element_line(colour = "black"),
+        axis.text = element_text(colour = "black"))+
+  theme(legend.position="right", legend.direction="vertical", legend.box.spacing = unit(5, "pt"),
+        legend.margin=margin(0,0,0,0))+
+  theme(text = element_text(size = 5)) + theme(axis.text = element_text(size = 5),
+                                               axis.text.x = element_text(colour = "black"),
+                                               axis.text.y = element_text(colour = "black"))+
+  theme(legend.key.size = unit(2, 'mm'))+
+  theme(legend.text = element_text(size=5))+
+  theme(legend.title = element_text(size=5)) + theme(axis.line = element_line(linewidth = 0.2)) + theme(axis.ticks = element_line(linewidth = 0.2))+
+  theme(axis.ticks = element_line(colour = "black"),
+        axis.text = element_text(colour = "black")) + theme(axis.line = element_line(linewidth = 0.12),
+                                                            axis.ticks = element_line(linewidth = 0.12))
+ggsave("MSGO.TIFF", width = 90 , height = 70 , scaling =0.5, units = "mm", dpi = 600 )
+
+######cneplot_CPU#######
+
+genelist_cpu_o <- just_sign_genes %>% 
+  filter(log2FoldChange <= 0) %>%
+  dplyr::select("Gene symbol", "log2FoldChange")
+
+genelist_cpu <- genelist_cpu_o[,2]
+names(genelist_cpu) = as.character(genelist_cpu_o[,1])
+genelist_cpu = sort(genelist_cpu, decreasing = TRUE)
+
+cnetplot(CPU_sign_pathways_BP,
+         showCategory = 2,
+         foldChange = genelist_cpu,
+         layout = "kk",
+         colorEdge = FALSE,
+         circular = FALSE,
+         node_label = "all",
+         cex_category = 0.1,
+         cex_gene = 0.1,
+         cex_label_category = 0.1,
+         cex_label_gene = 0.1,
+         color_category = "#E5C494",
+         color_gene = "#B3B3B3",
+         shadowtext = "none")+
+  scale_colour_gradient2(name = "fold change", low = "blue", mid = "green", high = "red")+
+  theme(text = element_text(size = 5))+
+  theme(legend.position="right", legend.direction="vertical", legend.box.spacing = unit(5, "pt"),
+        legend.margin=margin(0,0,0,0))+
+  theme(text = element_text(size = 5))+
+  theme(legend.key.size = unit(2, 'mm'))+
+  theme(legend.text = element_text(size=5))+
+  theme(legend.title = element_text(size=5))
+ggsave("CPUcne.pdf", width = 90 , height = 70 , units = "mm", dpi = 600 )
+
+
+scale_size_area(max_size = 0.1)+
+  scale_linewidth(range = c(0,0.1))
+
+?cnetplot
+
+####entrez-ensebl convert#####
+keytypes(org.Mm.eg.db)
+
+universe_genelist_CPU <- resrest_slfc_with_all__met_as_nm_300vs330 %>% 
+  dplyr::select("Ensembl ID")
+
+CPU_sign_gene_entrez <- bitr(CPU_sign_gene$`Gene symbol`, fromType="SYMBOL", toType=c("ENTREZID"), OrgDb="org.Mm.eg.db")
+universe_genelist_CPU_entrez <- bitr(universe_genelist_CPU$`Ensembl ID`, fromType="ENSEMBL", toType=c("ENTREZID"), OrgDb="org.Mm.eg.db")
+CPU_sign_gene_human_entrez <- bitr(CPU_sign_gene_human$Human_symbol,fromType="SYMBOL", toType=c("ENTREZID"), OrgDb="org.Hs.eg.db")
+CPU_g5_gene_human_entrez <- bitr(CPU_g5_gene_human$Human_symbol,fromType="SYMBOL", toType=c("ENTREZID"), OrgDb="org.Hs.eg.db")
+
+CPU_sign_gene_DO <- enrichDO(gene= CPU_sign_gene_human_entrez$ENTREZID,
+              ont           = "DO",
+              pvalueCutoff  = 0.05,
+              pAdjustMethod = "BH",
+              universe      = ,
+              minGSSize     = 5,
+              maxGSSize     = 500,
+              qvalueCutoff  = 0.05,
+              readable      = TRUE)
+
+
+CPU_g5_gene_DO <- enrichDO(gene= CPU_g5_gene_human_entrez$ENTREZID,
+                             ont           = "DO",
+                             pvalueCutoff  = 0.05,
+                             pAdjustMethod = "BH",
+                             universe      = ,
+                             minGSSize     = 5,
+                             maxGSSize     = 500,
+                             qvalueCutoff  = 0.05,
+                             readable      = TRUE)
+
+
+CPU_g5_gene_DO_table <-  CPU_g5_gene_DO@result %>% 
+  filter(p.adjust <0.05) %>% 
+  dplyr::arrange(-Count)
+
+
+############MS_DO_list############
+
+
+MS_sign_gene_entrez <- bitr(MS_sign_gene$`Gene symbol`, fromType="SYMBOL", toType=c("ENTREZID"), OrgDb="org.Mm.eg.db")
+MS_sign_gene_human_entrez <- bitr(MS_sign_gene_human$Human_symbol,fromType="SYMBOL", toType=c("ENTREZID"), OrgDb="org.Hs.eg.db")
+
+
+MS_sign_gene_DO <- enrichDO(gene= MS_sign_gene_human_entrez$ENTREZID,
+                             ont           = "DO",
+                             pvalueCutoff  = 0.05,
+                             pAdjustMethod = "BH",
+                             universe      = ,
+                             minGSSize     = 5,
+                             maxGSSize     = 500,
+                             qvalueCutoff  = 0.05,
+                             readable      = TRUE)
+
+
+
+MS_sign_gene_DO_table <-  MS_sign_gene_DO@result %>% 
+  filter(p.adjust <0.05) %>% 
+  dplyr::arrange(-Count)
+
+PD_cpu_list <- CPU_sign_gene %>% 
+  inner_join(PDlist, by = c("Gene symbol" = "Parkinsson disease list")) %>% 
+  unique()
+
+PD_cpu_list_full <- PD_cpu_list %>% 
+  inner_join(just_sign_genes, by = "Gene symbol" )
+
+colnames(PDlist)
+
+######list of CPU_AD#####
+
+CPU300_g5_reads <- data_met_as_nm_300vs330 %>% 
+  dplyr::select(CPU300_1, CPU300_3, CPU300_5, CPU300_7) %>% 
+  mutate(Mean = rowMeans(.[1:4])) %>% 
+  filter(CPU300_1 >= 5 &
+           CPU300_3 >= 5 &
+           CPU300_5 >= 5 &
+           CPU300_7 >= 5) %>% 
+  rownames_to_column(var = "Ensembl") %>% 
+  dplyr::select(Ensembl)
+
+CPU_g5_gene <- bitr(CPU300_g5_reads$Ensembl, fromType="ENSEMBL", toType=c("SYMBOL"), OrgDb="org.Mm.eg.db")
+CPU_g5_gene_symbol <- CPU_g5_gene %>% 
+  dplyr::select(SYMBOL)
+
+CPU_AD_list <- CPU_g5_gene_symbol %>% 
+  inner_join(AD_list, by = c("SYMBOL" = "SYMBOLS")) %>% 
+  unique()
+
+CPU_AD_list_full <- CPU_AD_list %>% 
+  inner_join(cpm_CPU300_full_jav, by = c("SYMBOL" = "Gene symbol" )) %>% 
+  arrange(-Mean)
+
+##############lost of MS AD###########
+
+MS_330_g5_reads <- data_met_as_nm_300vs330 %>% 
+  dplyr::select(MS_330_9, MS_330_10, MS_330_11, MS_330_12) %>% 
+  mutate(Mean = rowMeans(.[1:4])) %>% 
+  filter(MS_330_9 >= 5 &
+           MS_330_10 >= 5 &
+           MS_330_11 >= 5 &
+           MS_330_12 >= 5) %>% 
+  rownames_to_column(var = "Ensembl") %>% 
+  dplyr::select(Ensembl)
+
+MS_g5_gene <- bitr(MS_330_g5_reads$Ensembl, fromType="ENSEMBL", toType=c("SYMBOL"), OrgDb="org.Mm.eg.db")
+MS_g5_gene_symbol <- MS_g5_gene %>% 
+  dplyr::select(SYMBOL)
+
+MS_AD_list <- MS_g5_gene_symbol %>% 
+  inner_join(AD_list, by = c("SYMBOL" = "SYMBOLS")) %>% 
+  unique()
+
+MS_AD_list_full <- MS_AD_list %>% 
+  inner_join(cpm_MS330_full_jav, by = c("SYMBOL" = "Gene symbol" )) %>% 
+  arrange(-Mean)
+
+#############CPU PD############
+
+colnames(PDlist)
+
+CPU_PD_list <- CPU_g5_gene_symbol %>% 
+  inner_join(PDlist, by = c("SYMBOL" = "SYMBOLS")) %>% 
+  unique()
+
+CPU_PD_list_full <- CPU_PD_list %>% 
+  inner_join(cpm_CPU300_full_jav, by = c("SYMBOL" = "Gene symbol" )) %>% 
+  arrange(-Mean)
+
+view(CPU_PD_list_full)
+
+#############MS PD############
+
+MS_PD_list <- MS_g5_gene_symbol %>% 
+  inner_join(PDlist, by = c("SYMBOL" = "SYMBOLS")) %>% 
+  unique()
+
+MS_PD_list_full <- MS_PD_list %>% 
+  inner_join(cpm_MS330_full_jav, by = c("SYMBOL" = "Gene symbol" )) %>% 
+  arrange(-Mean)
+
+view(MS_PD_list_full)
+
+Union_AD_list <- CPU_AD_list %>% 
+  inner_join(MS_AD_list, by = "SYMBOL")
+
+CPU_vs_MS_AD_list <- CPU_AD_list %>% 
+  anti_join(MS_AD_list, by = "SYMBOL")
+
+MS_vs_CPU_AD_list <- MS_AD_list %>% 
+  anti_join(CPU_AD_list, by = "SYMBOL")
+
+#####filtering the low abundance transcripts cpu####
+
+CPU_cpm_met <- Metodikai_antisense_NM_cpm_jav %>% 
+  select(cpm_Geneid, cpm_CPU300_1, cpm_CPU300_3, cpm_CPU300_5, cpm_CPU300_7) %>% 
+  mutate(Mean = rowMeans(.[2:5])) %>% 
+  filter(Mean >= 50) %>% 
+  dplyr::arrange(-Mean)
+
+CPU_cpm_met_symbol <- bitr(CPU_cpm_met$cpm_Geneid, fromType="ENSEMBL", toType=c("SYMBOL"), OrgDb="org.Mm.eg.db") %>% 
+  dplyr::select(SYMBOL)
+
+CPU_AD_list_50 <- CPU_cpm_met_symbol %>% 
+  inner_join(AD_list, by = c("SYMBOL" = "SYMBOLS")) %>% 
+  unique()
+
+CPU_AD_list_50_full <- CPU_AD_list_50 %>% 
+  inner_join(cpm_CPU300_full_jav, by = c("SYMBOL" = "Gene symbol" )) %>% 
+  arrange(-Mean)
+
+CPU_AD_list_50_top_10 <- CPU_AD_list_50_full %>% 
+  dplyr::select(SYMBOL, Mean) %>% 
+  dplyr::slice_head(., n = 10) %>% 
+  dplyr::rename("Mean_CPU_AD" = "Mean")
+
+view(CPU_AD_list_50_full)
+
+#####filtering the low abundance transcripts MS####
+
+MS_cpm_met <- Metodikai_antisense_NM_cpm_jav %>% 
+  select(cpm_Geneid, cpm_MS_330_9, cpm_MS_330_10, cpm_MS_330_11, cpm_MS_330_12) %>% 
+  mutate(Mean = rowMeans(.[2:5])) %>% 
+  filter(Mean >= 1) %>% 
+  dplyr::arrange(-Mean)
+
+MS_cpm_met_symbol <- bitr(MS_cpm_met$cpm_Geneid, fromType="ENSEMBL", toType=c("SYMBOL"), OrgDb="org.Mm.eg.db") %>% 
+  dplyr::select(SYMBOL)
+
+MS_AD_list_50 <- MS_cpm_met_symbol %>% 
+  inner_join(AD_list, by = c("SYMBOL" = "SYMBOLS")) %>% 
+  unique()
+
+MS_AD_list_50_full <- MS_AD_list_50 %>% 
+  inner_join(cpm_MS330_full_jav, by = c("SYMBOL" = "Gene symbol" )) %>% 
+  arrange(-Mean)
+
+view(MS_AD_list_50_full)
+
+MS_AD_list_50_top_10 <- MS_AD_list_50_full %>% 
+  dplyr::select(SYMBOL, Mean) %>% 
+  dplyr::slice_head(., n = 10) %>% 
+  dplyr::rename("Mean_MS_AD" = "Mean")
+
+ALL_cpm_met_symbol <- bitr(Metodikai_antisense_NM_cpm_jav$cpm_Geneid, fromType="ENSEMBL", toType=c("SYMBOL"), OrgDb="org.Mm.eg.db") %>% 
+  inner_join(Metodikai_antisense_NM_cpm_jav, by = c("ENSEMBL" = "cpm_Geneid"))
+
+Chordplot_AD <- CPU_AD_list_50_top_10 %>% 
+  full_join(MS_AD_list_50_top_10, by = "SYMBOL") %>% 
+  dplyr::select(SYMBOL) %>%
+  dplyr::inner_join(ALL_cpm_met_symbol, by = "SYMBOL") %>%
+  dplyr::select(SYMBOL, cpm_CPU300_1, cpm_CPU300_3, cpm_CPU300_5, cpm_CPU300_7, 
+                cpm_MS_330_9, cpm_MS_330_10, cpm_MS_330_11, cpm_MS_330_12) %>% 
+  dplyr::mutate(Mean_CPU_AD = rowMeans(.[2:5])) %>%
+  dplyr::mutate(Mean_MS_AD = rowMeans(.[6:9])) %>%
+  dplyr::select(SYMBOL, Mean_MS_AD, Mean_CPU_AD) %>% 
+  dplyr::mutate(round(.[, 2:3], digit = 0)) %>%
+  data.frame(row.names = 1) %>% 
+  as.matrix()
+
+
+Chordplot_PD <- CPU_PD_list_50_top_10 %>% 
+  full_join(MS_PD_list_50_top_10, by = "SYMBOL") %>% 
+  dplyr::select(SYMBOL) %>%
+  dplyr::inner_join(ALL_cpm_met_symbol, by = "SYMBOL") %>%
+  dplyr::select(SYMBOL, cpm_CPU300_1, cpm_CPU300_3, cpm_CPU300_5, cpm_CPU300_7, 
+                cpm_MS_330_9, cpm_MS_330_10, cpm_MS_330_11, cpm_MS_330_12) %>% 
+  dplyr::mutate(Mean_CPU_PD = rowMeans(.[2:5])) %>%
+  dplyr::mutate(Mean_MS_PD = rowMeans(.[6:9])) %>%
+  dplyr::select(SYMBOL, Mean_MS_PD, Mean_CPU_PD) %>% 
+  dplyr::mutate(round(.[, 2:3], digit = 0)) %>%
+  data.frame(row.names = 1) %>% 
+  as.matrix()
+
+Chordplot_AD <- Chordplot_AD %>%
+  data.frame(row.names = 1) %>%  
+  as.matrix()
+?matrix()
+
+Chordplot_AD <- as.numeric(Chordplot_AD$Mean_CPU_AD)rownames(Chordplot_AD)
+
+
+colnames(Chordplot_AD)
+rownames(Chordplot_PD)
+
+col.pal_AD <- c(App = "#8a2be2", Ache = "#87cefa", Uchl1 = "#98f5ff", Serpine2 = "#66cdaa" , 
+             Klc1 = "#3cb371", Ctsd = "#9acd32", Grin2b = "#cdcd00",   Chat = "#ffff00", 
+             Lrp1 = "#ffec8b", Sorl1 = "#ffb90f", Ngfr =  "#ff6347",    Ntrk1 = "#ee4000", 
+             Abat = "#cd5c5c", Mean_CPU_AD = "#eed5d2", Mean_MS_AD = "#cdb7b5")
+
+
+
+col.pal_PD <- c(Hspa8 = "#8a2be2", Uchl1 = "#87cefa", Psap = "#98f5ff", Drd2 = "#66cdaa" , 
+                Dnajc6 = "#3cb371", Synj1 = "#9acd32", Mapt = "#cdcd00",   Htt = "#ffff00", 
+                Eif4g1 = "#ffec8b", Atp13a2 = "#ffb90f", Nos1 =  "#ff6347",    Vps13c = "#ee4000",
+                Mean_CPU_PD = "#eed5d2", Mean_MS_PD = "#cdb7b5")
+
+chordDiagramFromMatrix(Chordplot_AD, grid.col = col.pal_AD)
+
+chordDiagramFromMatrix(Chordplot_PD, grid.col = col.pal_PD)
+circos.clear()
+?circos.text()
+
+
+pdf(file = "AD_chord.pdf", 
+    width = 3.55, # The width of the plot in inches
+    height = 2.75) # The height of the plot in inches
+
+par(cex = 0.5, mar = c(0, 0, 0, 0))
+chordDiagramFromMatrix(Chordplot_AD, grid.col = col.pal_AD)
+
+# Step 3: Run dev.off() to create the file!
+dev.off()
+
+pdf(file = "PD_chord.pdf", 
+    width = 3.55, # The width of the plot in inches
+    height = 2.75) # The height of the plot in inches
+
+par(cex = 0.5, mar = c(0, 0, 0, 0))
+chordDiagramFromMatrix(Chordplot_PD, grid.col = col.pal_PD)
+
+# Step 3: Run dev.off() to create the file!
+dev.off()
+
+
+sheets_AD_PD <- list("AD_CPU_Venn" = CPU_AD_list_50_full$SYMBOL,
+                     "AD_MS_Venn" = MS_AD_list_50_full$SYMBOL,
+                     "PD_CPU_Venn" = CPU_PD_list_50_full$SYMBOL,
+                     "PD_MS_Venn" = MS_PD_list_50_full$SYMBOL)
+
+ggvenn(sheets_AD_PD, show_elements = F, label_sep = "\n", 
+       fill_color = brewer.pal(name="Set2",n=4), text_size = 4)
+
+?ggvenn
+
+?circos.axis
+?chordDiagram
+
+
+
+#####CPU PD list above 50 cpm#####
+colnames(PDlist)
+
+PDlist <- PDlist %>%
+  dplyr::rename("SYMBOLS" = "Parkinsson disease list" )
+
+CPU_PD_list_50 <- CPU_cpm_met_symbol %>% 
+  inner_join(PDlist, by = c("SYMBOL" = "SYMBOLS")) %>% 
+  unique()
+
+CPU_PD_list_50_full <- CPU_PD_list_50 %>% 
+  inner_join(cpm_CPU300_full_jav, by = c("SYMBOL" = "Gene symbol" )) %>% 
+  arrange(-Mean)
+
+CPU_PD_list_50_top_10 <- CPU_PD_list_50_full %>% 
+  dplyr::select(SYMBOL, Mean) %>% 
+  dplyr::slice_head(., n = 10) %>% 
+  dplyr::rename("Mean_CPU_PD" = "Mean")
+
+#####MS PD list above 50 cpm#####
+
+MS_PD_list_50 <- MS_cpm_met_symbol %>% 
+  inner_join(PDlist, by = c("SYMBOL" = "SYMBOLS")) %>% 
+  unique()
+
+MS_PD_list_50_full <- MS_PD_list_50 %>% 
+  inner_join(cpm_MS330_full_jav, by = c("SYMBOL" = "Gene symbol" )) %>% 
+  arrange(-Mean)
+
+view(MS_PD_list_50_full)
+
+MS_PD_list_50_top_10 <- MS_PD_list_50_full %>% 
+  dplyr::select(SYMBOL, Mean) %>% 
+  dplyr::slice_head(., n = 10) %>% 
+  dplyr::rename("Mean_MS_PD" = "Mean")
